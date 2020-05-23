@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ITSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CONCEPT">
+          <Key>
+            <PropertyRef Name="ConceptID" />
+          </Key>
+          <Property Name="ConceptID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="TopicID" Type="nchar" MaxLength="10" />
+          <Property Name="Concept_Name" Type="nchar" MaxLength="100" />
+          <Property Name="Concept_Content" Type="nvarchar(max)" />
+          <Property Name="Concept_Weight" Type="float" />
+        </EntityType>
+        <EntityType Name="SUBJECT">
+          <Key>
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SubjectID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="SubjectName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TOPIC">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="SubjectID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="W_Prerequisite" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ITS.dbo.USER' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="USER">
+          <Property Name="UserID" Type="int" />
+          <Property Name="UserName" Type="nchar" MaxLength="10" />
+          <Property Name="Password" Type="nchar" MaxLength="10" />
+          <Property Name="Right" Type="int" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ITS.dbo.USER_SUBJECT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="USER_SUBJECT">
+          <Property Name="UserID" Type="nchar" MaxLength="10" />
+          <Property Name="SubjectID" Type="nchar" MaxLength="10" />
+        </EntityType>-->
+        <Association Name="FK_CONCEPT_TOPIC">
+          <End Role="TOPIC" Type="Self.TOPIC" Multiplicity="0..1" />
+          <End Role="CONCEPT" Type="Self.CONCEPT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TOPIC">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="CONCEPT">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ITSModelStoreContainer">
+          <EntitySet Name="CONCEPT" EntityType="Self.CONCEPT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUBJECT" EntityType="Self.SUBJECT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TOPIC" EntityType="Self.TOPIC" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CONCEPT_TOPIC" Association="Self.FK_CONCEPT_TOPIC">
+            <End Role="TOPIC" EntitySet="TOPIC" />
+            <End Role="CONCEPT" EntitySet="CONCEPT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ITSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CONCEPT">
+          <Key>
+            <PropertyRef Name="ConceptID" />
+          </Key>
+          <Property Name="ConceptID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TopicID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Concept_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Concept_Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Concept_Weight" Type="Double" />
+          <NavigationProperty Name="TOPIC" Relationship="Self.FK_CONCEPT_TOPIC" FromRole="CONCEPT" ToRole="TOPIC" />
+        </EntityType>
+        <EntityType Name="SUBJECT">
+          <Key>
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SubjectID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SubjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TOPIC">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SubjectID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="W_Prerequisite" Type="Double" />
+          <NavigationProperty Name="CONCEPTs" Relationship="Self.FK_CONCEPT_TOPIC" FromRole="TOPIC" ToRole="CONCEPT" />
+        </EntityType>
+        <Association Name="FK_CONCEPT_TOPIC">
+          <End Role="TOPIC" Type="Self.TOPIC" Multiplicity="0..1" />
+          <End Role="CONCEPT" Type="Self.CONCEPT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TOPIC">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="CONCEPT">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ITSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CONCEPTs" EntityType="Self.CONCEPT" />
+          <EntitySet Name="SUBJECTs" EntityType="Self.SUBJECT" />
+          <EntitySet Name="TOPICs" EntityType="Self.TOPIC" />
+          <AssociationSet Name="FK_CONCEPT_TOPIC" Association="Self.FK_CONCEPT_TOPIC">
+            <End Role="TOPIC" EntitySet="TOPICs" />
+            <End Role="CONCEPT" EntitySet="CONCEPTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ITSModelStoreContainer" CdmEntityContainer="ITSEntities">
+          <EntitySetMapping Name="CONCEPTs">
+            <EntityTypeMapping TypeName="ITSModel.CONCEPT">
+              <MappingFragment StoreEntitySet="CONCEPT">
+                <ScalarProperty Name="ConceptID" ColumnName="ConceptID" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="Concept_Name" ColumnName="Concept_Name" />
+                <ScalarProperty Name="Concept_Content" ColumnName="Concept_Content" />
+                <ScalarProperty Name="Concept_Weight" ColumnName="Concept_Weight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUBJECTs">
+            <EntityTypeMapping TypeName="ITSModel.SUBJECT">
+              <MappingFragment StoreEntitySet="SUBJECT">
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TOPICs">
+            <EntityTypeMapping TypeName="ITSModel.TOPIC">
+              <MappingFragment StoreEntitySet="TOPIC">
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="W_Prerequisite" ColumnName="W_Prerequisite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

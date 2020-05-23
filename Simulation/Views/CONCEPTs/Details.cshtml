@@ -1,0 +1,51 @@
+﻿@model Simulation.Models.CONCEPT
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CONCEPT</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Concept_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Concept_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Concept_Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Concept_Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Concept_Weight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Concept_Weight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TOPIC.SubjectID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TOPIC.SubjectID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ConceptID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

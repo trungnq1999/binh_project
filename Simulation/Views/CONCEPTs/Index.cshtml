@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Simulation.Models.CONCEPT>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Concept_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Concept_Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Concept_Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TOPIC.SubjectID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Concept_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Concept_Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Concept_Weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TOPIC.SubjectID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ConceptID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ConceptID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ConceptID })
+        </td>
+    </tr>
+}
+
+</table>
